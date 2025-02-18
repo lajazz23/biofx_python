@@ -4,6 +4,7 @@ import os
 import platform
 from subprocess import getstatusoutput
 
+PATH = '/home/lajazz23/biofx_python/01_dna'
 PRG = './dna.py'
 RUN = f'python {PRG}' if platform.system() == 'Windows' else PRG
 TEST1 = ('./tests/inputs/input1.txt', '1 2 3 4')
@@ -14,7 +15,7 @@ TEST3 = ('./tests/inputs/input3.txt', '196 231 237 246')
 # --------------------------------------------------
 def test_exists() -> None:
     """ Program exists """
-
+    os.chdir(PATH)
     assert os.path.exists(PRG)
 
 
@@ -56,3 +57,13 @@ def test_file() -> None:
         retval, out = getstatusoutput(f'{RUN} {file}')
         assert retval == 0
         assert out == expected
+#---------------------------------------------------
+def test_count() -> None:
+	""" Test count """
+	assert count('') == (0, 0, 0, 0)
+	assert count('123XYZ') == (0, 0, 0, 0)
+	assert count('A') == (1, 0, 0, 0)
+	assert count('C') == (0, 1, 0, 0)
+	assert count('G') == (0, 0, 1, 0)
+	assert count('T') == (0, 0, 0, 1)
+	assert count('ACCGGGTTTT') == (1, 2, 3, 4)
